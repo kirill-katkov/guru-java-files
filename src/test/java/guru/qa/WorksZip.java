@@ -22,17 +22,18 @@ import java.util.zip.ZipInputStream;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 public class WorksZip {
-    public static String resourceName = "zip/archive.zip";
+    public static String resourceName = "src/test/resources/zip/archive.zip";
+    public static String resourceZipName = "zip/archive.zip";
+
     public static String textName = "textfile.txt";
     public static String textPdfName = "junit.pdf";
     public static String textXlsxName = "sample.xlsx";
     public static String textCsvName = "teacherscsv.csv";
+    public static File file = new File(resourceName);
     static ClassLoader cl = WorksZip.class.getClassLoader();
 
-    @Test
     static void zipFindTest(String findText) { //поиск элемента в архиве
         try {
-            File file = new File(cl.getResource(resourceName).getFile());
             ZipFile sourceZipFile = new ZipFile(file);
             String searchFileName = findText;
             Enumeration e = sourceZipFile.entries();
@@ -60,9 +61,8 @@ public class WorksZip {
 
     @Test
     void zipParsingTest() throws Exception { //вывод всех элементов в архиве
-        File file = new File(cl.getResource(resourceName).getFile());
         ZipFile zf = new ZipFile(file);
-        ZipInputStream is = new ZipInputStream(cl.getResourceAsStream(resourceName));
+        ZipInputStream is = new ZipInputStream(cl.getResourceAsStream(resourceZipName));
         ZipEntry entry;
         while ((entry = is.getNextEntry()) != null) {
             zipFindTest(entry.getName());
@@ -77,7 +77,7 @@ public class WorksZip {
 
     @Test
     void zipTxtTest() throws Exception {
-        ZipFile zipFile = new ZipFile(cl.getResource(resourceName).getFile());
+        ZipFile zipFile = new ZipFile(resourceName);
         Enumeration<? extends ZipEntry> entries = zipFile.entries();
         while (entries.hasMoreElements()) {
             ZipEntry entry = entries.nextElement();
@@ -98,9 +98,8 @@ public class WorksZip {
 
     @Test
     void zipPdfTest() throws Exception {
-        File file = new File(cl.getResource(resourceName).getFile());
         ZipFile zf = new ZipFile(file);
-        ZipInputStream is = new ZipInputStream(cl.getResourceAsStream(resourceName));
+        ZipInputStream is = new ZipInputStream(cl.getResourceAsStream(resourceZipName));
         ZipEntry entry;
         while ((entry = is.getNextEntry()) != null) {
             try (InputStream inputStream = zf.getInputStream(entry)) {
@@ -117,9 +116,8 @@ public class WorksZip {
 
     @Test
     void zipXlsTest() throws Exception {
-        File file = new File(cl.getResource(resourceName).getFile());
         ZipFile zf = new ZipFile(file);
-        ZipInputStream is = new ZipInputStream(cl.getResourceAsStream(resourceName));
+        ZipInputStream is = new ZipInputStream(cl.getResourceAsStream(resourceZipName));
         ZipEntry entry;
         while ((entry = is.getNextEntry()) != null) {
             try (InputStream inputStream = zf.getInputStream(entry)) {
@@ -136,9 +134,8 @@ public class WorksZip {
 
     @Test
     void zipCsvTest() throws Exception {
-        File file = new File(cl.getResource(resourceName).getFile());
         ZipFile zf = new ZipFile(file);
-        ZipInputStream is = new ZipInputStream(cl.getResourceAsStream(resourceName));
+        ZipInputStream is = new ZipInputStream(cl.getResourceAsStream(resourceZipName));
         ZipEntry entry;
         while ((entry = is.getNextEntry()) != null) {
             try (InputStream inputStream = zf.getInputStream(entry)) {
